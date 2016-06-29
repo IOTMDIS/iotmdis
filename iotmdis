@@ -1,0 +1,72 @@
+//DECLARACIóN DE VARIABLES  
+  
+//pin de conexion del sensor  
+int lm35 = A0;   
+  
+//variable para la temperatura  
+int temperatura = 0;   
+  
+//Variables para almacenar la salida en funcion de la temperatura  
+int salidaR, salidaV,salidaA;   
+  
+//Patilla a la que esta conectado el led Azul  
+int ledA = 11;   
+  
+//Patilla a la que esta conectado el led Verde  
+int ledV = 10;  
+  
+//Patilla a la que esta conectado el led Rojo  
+int ledR = 12;  
+  
+void setup(){  
+    //declara pin del LM de entrada  
+    pinMode(lm35, INPUT);   
+  
+    /*Indicamos a que la patilla a la que esta conectada 
+     el led Azul es una salida*/  
+    pinMode(ledA,OUTPUT);   
+  
+    /*Indicamos a que la patilla a la que esta conectada 
+    el led Verde es una salida*/  
+    pinMode(ledV,OUTPUT);  
+  
+    /*Indicamos a que la patilla a la que esta conectada  
+    el led Rojo es una salida*/  
+    pinMode(ledR,OUTPUT);   
+    Serial.begin(9600); 
+  }  
+  
+  
+void loop(){  
+    /*Leemos el sensor y hacemos las operaciones  
+    necesarias para pasarloa grados celsius*/                     
+    temperatura = (5.0 * analogRead(lm35)*100.0)/1023.0;
+    Serial.println(temperatura);
+  delay(1);  
+    /*damos a cada valor de nuestra escala  
+    del 0 al 21 un valor proporcional en una escala del 255 al 0*/  
+    if (temperatura<35){
+      digitalWrite(ledA, HIGH);
+      digitalWrite(ledV, LOW);
+      digitalWrite(ledR, LOW); 
+      } 
+    else if (temperatura<37){
+      digitalWrite(ledV, HIGH);
+      digitalWrite(ledA, LOW);
+      digitalWrite(ledR, LOW); 
+      }
+    else if (temperatura<38){
+      digitalWrite(ledR, HIGH);
+      digitalWrite(ledA, LOW);
+      digitalWrite(ledV, LOW); 
+      }
+    else { 
+      digitalWrite(ledR, HIGH);
+      delay(200); // espera 1 segundo
+      digitalWrite(ledR, LOW); // apaga el LED
+      delay(200); // espera 1 segundo
+      digitalWrite(ledV, LOW);
+      digitalWrite(ledA, LOW);
+      }  
+     
+  }  
